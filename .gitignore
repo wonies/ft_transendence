@@ -1,0 +1,22 @@
+postgres/
+nginx/
+
+# Python 관련
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# 운영체제 관련
+.DS_Store
+
+# Django 관련
+staticfiles/
+migrations/*
+
+# 기타
+*.log
+*.sqlite3
+.env
+
+node_modules/
