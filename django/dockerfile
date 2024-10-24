@@ -1,0 +1,30 @@
+FROM python:3.12.5
+
+WORKDIR /app
+
+# 필요한 패키지 설치
+RUN apt-get update && apt-get install -y netcat-openbsd
+
+# 필요한 Python 패키지 설치
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 애플리케이션 코드 복사
+COPY ./pingpong /app/
+
+# CMD 지시문에 시작 로직 직접 포함
+CMD ["sh", "-c", "\
+    echo 'Waiting for database...' && \
+    while ! nc -z db 5432; do \
+        sleep 0.1; \
+    done && \
+    echo 'Database started' && \
+    echo 'Making migrations...' && \
+    python manage.py makemigrations && \
+    echo 'Collecting static files...' && \
+    python manage.py collectstatic --noinput && \
+    echo 'Applying migrations...' && \
+    python manage.py migrate && \
+    echo 'Starting server...' && \
+    python manage.py runserver 0.0.0.0:8000 \
+"]

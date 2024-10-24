@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    build: ./postgres  
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    networks:
+      - app-network
+
+  web:
+    build:
+      context: ./django
+      dockerfile: Dockerfile
+    volumes:
+      - ./django/pingpong:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - DATABASE_URL=postgres://myuser:mypassword@db:5432/mydb
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "443:443"
+    networks:
+      - app-network
+    depends_on:
+      - web
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge

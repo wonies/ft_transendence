@@ -1,0 +1,34 @@
+.start-page {
+  background: transparent;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-family: 'HakgyoansimPuzzleTTF-Outline';
+}
+
+.start-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.welcome {
+  padding-bottom: 5vh;
+}
+
+.start-page-wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+}
+
+.trans-box {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
